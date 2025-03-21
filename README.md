@@ -20,7 +20,7 @@ This repository has the data for the run [**insert run name**].
 conda env create -f environment.yml
 ```
 
-2. Run the notebooks with the created environment `[INSERT NAME OF ENV]`
+2. Run the notebooks with the created environment `baby-1l-run-3`
 
 ## Todo list:
 - [ ] [Link to Zenodo](https://zenodo.org/)
