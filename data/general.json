@@ -273,23 +273,23 @@
                 }
             },
             "13": {
-                "planned_sample_time": "4/10/2025 10:03",
-                "actual_sample_time": null,
+                "planned_sample_time": "4/18/2025 10:03",
+                "actual_sample_time": "4/18/2025 13:11",
                 "lsc_vials_filenames": {
-                    "1": null,
-                    "2": null,
-                    "3": null,
-                    "4": null
+                    "1": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "2": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "3": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "4": "1L_BL-2_IV_3-13_OV_3-9.csv"
                 }
             },
             "14": {
-                "planned_sample_time": "4/10/2025 10:03",
-                "actual_sample_time": null,
+                "planned_sample_time": "4/21/2025 10:03",
+                "actual_sample_time": "4/21/2025 12:32",
                 "lsc_vials_filenames": {
-                    "1": null,
-                    "2": null,
-                    "3": null,
-                    "4": null
+                    "1": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "2": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "3": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "4": "1L_BL-2_IV_3-14_OV_3-10.csv"
                 }
             }
         },
@@ -382,6 +382,26 @@
                     "2": "1L_BL-2_IV_3-12_OV_3-8.csv",
                     "3": "1L_BL-2_IV_3-12_OV_3-8.csv",
                     "4": "1L_BL-2_IV_3-12_OV_3-8.csv"
+                }
+            },
+            "9": {
+                "planned_sample_time": "4/18/2025 10:03",
+                "actual_sample_time": "4/18/2025 13:11",
+                "lsc_vials_filenames": {
+                    "1": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "2": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "3": "1L_BL-2_IV_3-13_OV_3-9.csv",
+                    "4": "1L_BL-2_IV_3-13_OV_3-9.csv"
+                }
+            },
+            "10": {
+                "planned_sample_time": "4/21/2025 10:03",
+                "actual_sample_time": "4/21/2025 13:32",
+                "lsc_vials_filenames": {
+                    "1": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "2": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "3": "1L_BL-2_IV_3-14_OV_3-10.csv",
+                    "4": "1L_BL-2_IV_3-14_OV_3-10.csv"
                 }
             }
         }
