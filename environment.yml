@@ -23,3 +23,4 @@ dependencies:
       - openmc_data_downloader
       - matplotlib-label-lines
       - h-transport-materials
+      - pathsim
