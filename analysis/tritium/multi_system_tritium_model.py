@@ -6,9 +6,6 @@
 
 # IMPORTS ===============================================================================
 
-import numpy as np
-import matplotlib.pyplot as plt
-
 from pathsim import Simulation, Connection
 from pathsim.blocks import ODE, Source, Scope, Block
 from pathsim.solvers import RKBS32, RKF21, RKCK54
@@ -21,14 +18,13 @@ from tritium_model import (
     gas_switch_deltatime,
 )
 
-from scipy.integrate import cumulative_trapezoid
+# PARAMETERS ============================================================================
 
 A_wall = baby_model.A_wall
 A_top = baby_model.A_top
 V_salt = baby_model.volume
 TBR = baby_model.TBR
 neutron_rate = baby_model.neutron_rate
-# PARAMETERS ============================================================================
 
 TBR = TBR.to("particle/neutron").magnitude
 
@@ -115,8 +111,6 @@ Sim = Simulation(
 )
 
 
-# Run Example ===========================================================================
-
 if __name__ == "__main__":
 
     Sim.run(total_duration)
@@ -148,34 +142,4 @@ if __name__ == "__main__":
     fig.update_xaxes(exponentformat="power")
     fig.update_yaxes(exponentformat="power")
     fig.write_html("baby.html")
-    # fig.show()
-
-    # compute cumulative release
-    c_salt = data[0]  # salt concentration
-    c_piping = data[1]  # piping concentration
-    h2_in = data[3]  # H2 concentration
-    top_release = (1 - f) * c_salt * k_top * A_top + c_piping * h2_in * k_exchange
-    cumulative_top = cumulative_trapezoid(top_release, time, initial=0)
-    wall_release = c_salt * k_wall * A_wall * h2_in
-    cumulative_wall = cumulative_trapezoid(wall_release, time, initial=0)
-
-    # plot cumulative release
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(x=time, y=cumulative_top, mode="lines", name="Top release")
-    )
-    fig.add_trace(
-        go.Scatter(x=time, y=cumulative_wall, mode="lines", name="Wall release")
-    )
-    fig.update_layout(
-        legend_title="Components",
-        font=dict(size=10),
-        # yaxis_type="log",
-        # xaxis_type="log",
-        xaxis_title="Time [s]",
-        yaxis_title="Cumulative release [#]",
-    )
-    fig.update_xaxes(exponentformat="power")
-    fig.update_yaxes(exponentformat="power")
-    fig.write_html("cumulative_release.html")
     # fig.show()
