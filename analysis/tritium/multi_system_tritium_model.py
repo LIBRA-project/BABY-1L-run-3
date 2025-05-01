@@ -48,8 +48,8 @@ total_duration = 50 * 24 * 3600
 irradiation_time = 12 * 3600
 
 f = 0.05
-initial_piping_concentration = 4e9  # initial concentration in the piping
-k_exchange = 30 * k_top
+initial_piping_concentration = 5.5e9  # initial concentration in the piping
+k_exchange = 10 * k_top
 
 
 # BLOCKS ================================================================================
