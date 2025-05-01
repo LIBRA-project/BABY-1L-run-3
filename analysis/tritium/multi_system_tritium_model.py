@@ -16,6 +16,7 @@ from tritium_model import (
     k_wall,
     baby_model,
     gas_switch_deltatime,
+    irradiations,
 )
 
 # PARAMETERS ============================================================================
@@ -41,11 +42,15 @@ gas_switch_deltatime = gas_switch_deltatime.to("seconds").magnitude
 neutron_rate = neutron_rate.to("neutrons/s").magnitude
 
 total_duration = 50 * 24 * 3600
-irradiation_time = 12 * 3600
+irradiation_time = (
+    sum([irr[1] - irr[0] for irr in irradiations]).to("seconds").magnitude
+)
 
-f = 0.05
-initial_piping_concentration = 5.5e9  # initial concentration in the piping
+f = 0.05  # fraction of tritium that sticks to the piping (this is minimal compared to IC)
+initial_piping_IV_concentration = 5.5e9  # initial concentration in the piping IV
+initial_piping_OV_concentration = 2e9  # initial concentration in the piping OV
 k_exchange = 10 * k_top
+k_exchange_OV = 8 * k_top
 
 
 # BLOCKS ================================================================================
@@ -73,9 +78,20 @@ def piping_ode(x, u, t):
     return dc_dt
 
 
+def piping_OV_ode(x, u, t):
+    # unpack states
+    c_piping = x
+    # unpack inputs
+    h2_in = u
+    dc_dt = -c_piping * h2_in * k_exchange_OV
+    return dc_dt
+
+
 salt = ODE(func=salt_ode)
 
-piping = ODE(func=piping_ode, initial_value=initial_piping_concentration)
+piping = ODE(func=piping_ode, initial_value=initial_piping_IV_concentration)
+
+piping_wall = ODE(func=piping_OV_ode, initial_value=initial_piping_OV_concentration)
 
 neutron_rate_block = Pulse(
     amplitude=neutron_rate,
@@ -84,9 +100,9 @@ neutron_rate_block = Pulse(
 )
 h2 = Step(amplitude=1, tau=gas_switch_deltatime)
 
-Sco = Scope(labels=["salt", "piping", "neutron_rate", "h2"])
+Sco = Scope(labels=["salt", "piping", "piping_wall", "neutron_rate", "h2"])
 
-blocks = [neutron_rate_block, salt, piping, h2, Sco]
+blocks = [neutron_rate_block, salt, piping, piping_wall, h2, Sco]
 
 
 # CONNECTIONS ===========================================================================
@@ -94,8 +110,9 @@ blocks = [neutron_rate_block, salt, piping, h2, Sco]
 connections = [
     Connection(salt, piping[0], Sco[0]),
     Connection(piping, Sco[1]),
-    Connection(neutron_rate_block, salt[0], Sco[2]),
-    Connection(h2, salt[1], piping[1], Sco[3]),
+    Connection(piping_wall, Sco[2]),
+    Connection(neutron_rate_block, salt[0], Sco[3]),
+    Connection(h2, salt[1], piping[1], piping_wall[0], Sco[4]),
 ]
 
 
