@@ -1,6 +1,6 @@
 import openmc
-import vault
 from libra_toolbox.neutronics.neutron_source import A325_generator_diamond
+from libra_toolbox.neutronics import vault
 import helpers
 
 
