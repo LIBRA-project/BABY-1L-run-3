@@ -108,16 +108,32 @@
                     "position": "A 325 - top",
                     "material": "Zr",
                     "mass": {
-                        "value": null,
+                        "value": 0.9036,
                         "unit": "g"
+                    },
+                    "mass_err": {
+                        "value": 0.0001,
+                        "unit": "g"
+                    },
+                    "thickness": {
+                        "value": 0.04,
+                        "unit": "inches"
                     }
                 },
                 {
                     "position": "A 325 - bottom",
                     "material": "Nb",
                     "mass": {
-                        "value": null,
+                        "value": 0.5359,
                         "unit": "g"
+                    },
+                    "mass_err": {
+                        "value": 0.0007,
+                        "unit": "g"
+                    },
+                    "thickness": {
+                        "value": 0.02,
+                        "unit": "inches"
                     }
                 }
             ]
