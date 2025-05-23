@@ -258,7 +258,7 @@
                     "4": "1L_BL-2_IV_3-9_OV_3-5.csv"
                 }
             },
-            "10":{
+            "10": {
                 "planned_sample_time": "4/7/2025 10:03",
                 "actual_sample_time": "4/7/2025 11:28",
                 "lsc_vials_filenames": {
