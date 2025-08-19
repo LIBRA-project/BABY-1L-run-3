@@ -11,6 +11,7 @@ from tritium_model import (
     k_top,
     baby_model,
     measured_TBR,
+    calculated_TBR,
     replacement_times_top,
     replacement_times_walls,
     gas_switch_deltatime,
@@ -29,20 +30,22 @@ irradiation_time = total_irradiation_time.to("s").magnitude
 
 S_IV = 1
 S_OV = 1
-k1 = 3e-17
-k2 = 0.4e-4
-# f_stick_IV = 0.15
+k1 = 1e-17  # T + T -> T2
+k2 = 0.03e-4  # H2 + T -> HT + H
 f_stick_IV = 0.15
 f_stick_OV = 0.9
 
-initial_inv_wall_IV = activity_to_quantity(4 * ureg.Bq).to(ureg.particle).magnitude
+initial_inv_wall_IV = activity_to_quantity(8 * ureg.Bq).to(ureg.particle).magnitude
 initial_inv_wall_OV = 8e9
 t_h2 = gas_switch_deltatime.to("s").magnitude
 
-tbr = measured_TBR.to("dimensionless").magnitude
+tbr = calculated_TBR.to("dimensionless").magnitude
+
+# since we don't have a nice TBR measurement here, adjust it
+tbr *= 1.5
 
 IV_gas_residence_time = 0.1 * baby_vol / (A_IV * k_IV)
-OV_gas_residence_time = 2.2 * baby_vol / (A_OV * k_OV)
+OV_gas_residence_time = 3 * baby_vol / (A_OV * k_OV)
 
 baby_residence_time = baby_vol / (k_IV * A_IV + k_OV * A_OV)
 
@@ -52,7 +55,7 @@ conversion_efficiency = 1
 # Create blocks
 blocks, events = [], []
 
-tbr_7 = pathsim.blocks.amplifier.Amplifier(gain=3e-3)
+tbr_7 = pathsim.blocks.amplifier.Amplifier(gain=tbr)
 blocks.append(tbr_7)
 
 baby_8 = pathview.custom_pathsim_blocks.Process(
@@ -137,12 +140,12 @@ ov_36 = pathview.custom_pathsim_blocks.Integrator()
 blocks.append(ov_36)
 
 iv_gas_37 = pathview.custom_pathsim_blocks.Process(
-    residence_time=0.1 * baby_vol / (A_IV * k_IV),
+    residence_time=IV_gas_residence_time,
 )
 blocks.append(iv_gas_37)
 
 ov_gas_38 = pathview.custom_pathsim_blocks.Process(
-    residence_time=4 * baby_vol / (A_OV * k_OV),
+    residence_time=OV_gas_residence_time,
 )
 blocks.append(ov_gas_38)
 
