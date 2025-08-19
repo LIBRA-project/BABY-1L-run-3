@@ -17,10 +17,9 @@ dependencies:
   - pint
   - h5py
   - pytables
-  - papermill
   - pip
   - pip:
-      - libra-toolbox
+      - libra-toolbox>=0.8
       - openmc_data_downloader
       - matplotlib-label-lines
       - h-transport-materials
