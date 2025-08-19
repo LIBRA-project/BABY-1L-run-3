@@ -17,6 +17,7 @@ dependencies:
   - pint
   - h5py
   - pytables
+  - papermill
   - pip
   - pip:
       - libra-toolbox==0.9
