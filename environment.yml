@@ -19,7 +19,7 @@ dependencies:
   - pytables
   - pip
   - pip:
-      - libra-toolbox>=0.8
+      - libra-toolbox>=0.6
       - openmc_data_downloader
       - matplotlib-label-lines
       - h-transport-materials
