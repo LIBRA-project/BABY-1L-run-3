@@ -13,7 +13,7 @@ jobs:
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-update-conda: true
+          # auto-update-conda: true
           environment-file: environment.yml
           activate-environment: baby-1l-run-3
           conda-version: "25.3.1"
