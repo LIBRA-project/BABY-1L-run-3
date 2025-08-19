@@ -1,26 +1,23 @@
-name: baby-1l-run-3
+name: baby_1l_run_2
 channels:
   - conda-forge
 dependencies:
   - python
-  - openmc # add version tag
+  - openmc>=0.14.0
   - openmc-plotter
   - numpy # add version tag
   - scipy # add version tag
   - matplotlib # add version tag
-  - plotly
   - sympy
   - pandas
   - pint-pandas
   - nbconvert
   - ipykernel
   - pint
-  - h5py
-  - pytables
   - papermill
   - pip
   - pip:
-      - libra-toolbox==0.9
+      - libra-toolbox==0.8
       - openmc_data_downloader==0.6.0
       - matplotlib-label-lines
       - h-transport-materials~=0.17.0
