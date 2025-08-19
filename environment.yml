@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python
-  - openmc>=0.14.0
+  - openmc # add version tag
   - openmc-plotter
   - numpy # add version tag
   - scipy # add version tag
@@ -20,7 +20,7 @@ dependencies:
   - papermill
   - pip
   - pip:
-      - libra-toolbox>=0.8
-      - openmc_data_downloader==0.6.0
+      - libra-toolbox
+      - openmc_data_downloader
       - matplotlib-label-lines
-      - h-transport-materials~=0.17.0
+      - h-transport-materials
