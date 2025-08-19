@@ -20,6 +20,8 @@ dependencies:
   - pip
   - pip:
       - libra-toolbox>=0.6
+      - pathsim
+      - git+https://github.com/festim-dev/pathview
       - openmc_data_downloader
       - matplotlib-label-lines
       - h-transport-materials
