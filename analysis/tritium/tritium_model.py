@@ -167,14 +167,34 @@ for generator in general_data["generators"]:
         irradiations.append([irr_start_time, irr_stop_time])
 
 # Neutron rate
-neutron_rate_relative_uncertainty = 0.1
+# check if neutron rate is provided in processed_data.json
+processed_data_file = Path("../../data/processed_data.json")
+neutron_rate = None
+if processed_data_file.exists():
+    with open(processed_data_file, "r") as f:
+        processed_data = json.load(f)
+    if "neutron_rate_used_in_model" in processed_data:
+        if processed_data["neutron_rate_used_in_model"]["value"] is not None:
+            neutron_rate = processed_data["neutron_rate_used_in_model"]["value"] * ureg(
+                processed_data["neutron_rate_used_in_model"]["unit"]
+            )
+            neutron_rate_uncertainty = processed_data["neutron_rate_used_in_model"]["error"]* ureg(
+                    processed_data["neutron_rate_used_in_model"]["unit"]
+                )
+            print(
+                f"Using neutron rate from processed_data.json: {neutron_rate} ± {neutron_rate_uncertainty}"
+            )
+if neutron_rate is None:
+    neutron_rate = 1.3e09 * ureg.neutron * ureg.s**-1 # based on manufacturer test data for generator settings
+    neutron_rate_uncertainty = 4.9e06 * ureg.neutron * ureg.s**-1
+    print(
+        f"Using default neutron rate: {neutron_rate} ± {neutron_rate_uncertainty}"
+    )
 
-
-# neutron_rate = 2.611e+08 * ureg.neutron * ureg.s**-1  # TODO from Collin's foil analysis, replace with more robust method
-# neutron_rate = np.mean([9.426e7, 8.002e7, 1.001e8]) * ureg.neutron * ureg.s**-1 # copied from run 1
-
-neutron_rate = 9.47e7 * ureg.neutron * ureg.s**-1
-scaled_neutron_rate = 1.1 * neutron_rate
+neutron_rate_relative_uncertainty = (neutron_rate_uncertainty / neutron_rate).to(
+    ureg.dimensionless
+)
+# scaled_neutron_rate = 1.1 * neutron_rate
 
 # TBR from OpenMC
 
@@ -217,7 +237,8 @@ baby_model = Model(
     radius=baby_radius,
     height=baby_height,
     TBR=calculated_TBR,
-    neutron_rate=scaled_neutron_rate,
+    # neutron_rate=scaled_neutron_rate,
+    neutron_rate=neutron_rate,
     irradiations=irradiations,
     k_top=k_top,
     k_wall=k_wall,
@@ -250,6 +271,7 @@ processed_data = {
     "neutron_rate_used_in_model": {
         "value": baby_model.neutron_rate.magnitude,
         "unit": str(baby_model.neutron_rate.units),
+        "error": neutron_rate_uncertainty.magnitude,
     },
     "measured_TBR": {
         "value": measured_TBR.magnitude,
