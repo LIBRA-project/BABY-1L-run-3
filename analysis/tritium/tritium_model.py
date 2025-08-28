@@ -8,7 +8,7 @@ from libra_toolbox.tritium.lsc_measurements import (
     LSCSample,
     LIBRASample,
 )
-
+from pathlib import Path
 from datetime import datetime
 
 
@@ -197,8 +197,6 @@ neutron_rate_relative_uncertainty = (neutron_rate_uncertainty / neutron_rate).to
 # scaled_neutron_rate = 1.1 * neutron_rate
 
 # TBR from OpenMC
-
-from pathlib import Path
 
 filename = "../neutron/statepoint.100.h5"
 filename = Path(filename)
