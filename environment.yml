@@ -22,3 +22,5 @@ dependencies:
       - openmc_data_downloader==0.6.0
       - matplotlib-label-lines
       - h-transport-materials~=0.17.0
+      - pathsim
+      - git+https://github.com/festim-dev/pathview

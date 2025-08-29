@@ -116,9 +116,9 @@ assert len(np.unique(all_quench)) == 1
 for stream in run.streams:
     for sample in stream.samples:
         for lsc_vial in sample.samples:
-            assert (
-                lsc_vial.background_substracted
-            ), f"Background not substracted for {sample}"
+            assert lsc_vial.background_substracted, (
+                f"Background not substracted for {sample}"
+            )
 
 IV_stream = gas_streams["IV"]
 OV_stream = gas_streams["OV"]
@@ -128,8 +128,8 @@ sampling_times = {
     "OV": sorted(OV_stream.relative_times_as_pint),
 }
 
-replacement_times_top = sampling_times["IV"]
-replacement_times_walls = sampling_times["OV"]
+replacement_times_top = ureg.Quantity.from_list(sampling_times["IV"])
+replacement_times_walls = ureg.Quantity.from_list(sampling_times["OV"])
 
 # read gas change time
 
@@ -227,8 +227,9 @@ measured_TBR = (T_produced / quantity_to_activity(T_consumed)).to(
 )
 
 # Run 1 transport coeff and measured TBR for overlay
-optimised_ratio = 0.0 * 1.7e-2
+optimised_ratio = 1 / 12
 k_top = 1.45 * 8.9e-8 * ureg.m * ureg.s**-1
+# k_top = 2.8 * 8.9e-8 * ureg.m * ureg.s**-1 # Plausible OV curve fit
 k_wall = optimised_ratio * k_top
 
 baby_model = Model(
