@@ -27,12 +27,12 @@ conda env create -f environment.yml
 - [x] Modify [binder](https://mybinder.org/) badge by inserting the repo name
 - [x] Add general run data to [`data/general.json`](data/general.json)
 - [x] Add LSC data to [`data/tritium_detection`](data/tritium_detection)
-- [ ] Add neutron detection data to [`data/neutron_detection`](data/neutron_detection)
+- [x] Add neutron detection data to [`data/neutron_detection`](data/neutron_detection)
 - [x] Add OpenMC model to [`analysis/neutron`](analysis/neutron)
 - [x] Add Tritium model to [`analysis/tritium`](analysis/tritium)
-- [ ] Add the right version tags to [`environment.yml`](environment.yml)
+- [x] Add the right version tags to [`environment.yml`](environment.yml)
 - [x] Add and update information in the README
-- [ ] Add all analysis to [CI workflows](.github/workflows)
+- [x] Add all analysis to [CI workflows](.github/workflows)
 - [x] Make first release on GitHub
 - [x] Update Zenodo badge with new DOI
 - [x] Link Zenodo record (created automatically) to the [LIBRA-project Zenodo community](https://zenodo.org/communities/libra-project/records)
