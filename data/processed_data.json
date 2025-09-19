@@ -1,7 +1,7 @@
 {
     "modelled_TBR": {
-        "mean": 0.0031673700465828848,
-        "std_dev": 3.6340214185035465e-05
+        "mean": 0.0020800110159729097,
+        "std_dev": 2.7492246694554718e-05
     },
     "modelled_baby_radius": {
         "value": 7.0,
@@ -43,7 +43,7 @@
         "unit": "particle / neutron"
     },
     "TBR_used_in_model": {
-        "value": 0.0031673700465828848,
+        "value": 0.0020800110159729097,
         "unit": "particle / neutron"
     },
     "k_top": {
