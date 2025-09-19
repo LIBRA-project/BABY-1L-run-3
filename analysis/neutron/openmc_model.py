@@ -1,7 +1,7 @@
 import openmc
 from libra_toolbox.neutronics.neutron_source import A325_generator_diamond
-from libra_toolbox.neutronics import vault
 from libra_toolbox.neutronics.materials import *
+from libra_toolbox.neutronics import vault
 
 
 def baby_geometry(x_c: float, y_c: float, z_c: float):
@@ -167,15 +167,15 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
     sphere = openmc.Sphere(x0=x_c, y0=y_c, z0=z_c, r=50.00)  # before r=50.00
 
     ######## Lead bricks positioned under the source #################
-    positions = [
+    lead_positions = [
         (x_c - 13.50, y_c, z_c - z_tab),
-        (x_c - 4.50, y_c, z_c - z_tab),
+        (x_c - 2.96, y_c, z_c - z_tab),
         (x_c + 36.50, y_c, z_c - z_tab),
-        (x_c + 27.50, y_c, z_c - z_tab),
+        (x_c + 25.96, y_c, z_c - z_tab),
     ]
 
     lead_blocks = []
-    for position in positions:
+    for position in lead_positions:
         lead_block_region = openmc.model.RectangularParallelepiped(
             position[0] - lead_width / 2,
             position[0] + lead_width / 2,
@@ -185,6 +185,25 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
             position[2] + lead_height,
         )
         lead_blocks.append(lead_block_region)
+
+    src_supp_length = 40.00
+    src_supp_height = 20.00
+    src_supp_width = 2.54
+    src_supp_position = [
+        (x_c - 13.50 + lead_width / 2, y_c, z_c - z_tab),
+        (x_c + 25.96 + lead_width / 2, y_c, z_c - z_tab),
+    ]
+    src_supports = []
+    for position in src_supp_position:
+        source_support = openmc.model.RectangularParallelepiped(
+            position[0],
+            position[0] + src_supp_width,
+            position[1] - src_supp_length / 2,
+            position[1] + src_supp_length / 2,
+            position[2],
+            position[2] + src_supp_height,
+        )
+        src_supports.append(source_support)
 
     # regions
     source_wall_region = -ext_cyl_source & +source_region
@@ -209,6 +228,8 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
     lead_block_2_region = -lead_blocks[1]
     lead_block_3_region = -lead_blocks[2]
     lead_block_4_region = -lead_blocks[3]
+    src_supp_1_region = -src_supports[0] & ~source_wall_region & ~source_region
+    src_supp_2_region = -src_supports[1] & ~source_wall_region & ~source_region
     he_region = (
         +z_plane_5
         & -z_plane_12
@@ -228,6 +249,8 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
         & ~lead_block_2_region
         & ~lead_block_3_region
         & ~lead_block_4_region
+        & ~src_supp_1_region
+        & ~src_supp_2_region
     )
     sphere_region = (
         -sphere
@@ -248,6 +271,8 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
         & ~lead_block_2_region
         & ~lead_block_3_region
         & ~lead_block_4_region
+        & ~src_supp_1_region
+        & ~src_supp_2_region
     )
 
     # cells
@@ -264,7 +289,7 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
     alumina_cell = openmc.Cell(region=alumina_region)
     alumina_cell.fill = Alumina
     cllif_cell = openmc.Cell(region=cllif_region)
-    cllif_cell.fill = Cllif  # cllif_nat or lithium_lead
+    cllif_cell.fill = Cllif  # Cllif or lithium_lead
     gap_cell = openmc.Cell(region=gap_region)
     gap_cell.fill = Helium
     cap_cell = openmc.Cell(region=cap_region)
@@ -287,6 +312,10 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
     lead_block_3_cell.fill = Lead
     lead_block_4_cell = openmc.Cell(region=lead_block_4_region)
     lead_block_4_cell.fill = Lead
+    src_supp_1_cell = openmc.Cell(region=src_supp_1_region)
+    src_supp_1_cell.fill = HDPE
+    src_supp_2_cell = openmc.Cell(region=src_supp_2_region)
+    src_supp_2_cell.fill = HDPE
 
     cells = [
         source_wall_cell_1,
@@ -307,6 +336,8 @@ def baby_geometry(x_c: float, y_c: float, z_c: float):
         lead_block_2_cell,
         lead_block_3_cell,
         lead_block_4_cell,
+        src_supp_1_cell,
+        src_supp_2_cell,
     ]
 
     return sphere, cllif_cell, cells
@@ -330,6 +361,7 @@ def baby_model():
         Air,
         Epoxy,
         Helium,
+        HDPE,
     ]
 
     # BABY coordinates
